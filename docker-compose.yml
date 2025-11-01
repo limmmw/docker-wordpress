@@ -6,14 +6,21 @@ services:
     container_name: wordpress
     restart: always
     ports:
-      - "8080:80"
+      - "8081:80"
     environment:
       WORDPRESS_DB_HOST: ${DB_HOST}
       WORDPRESS_DB_USER: ${DB_USER}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
       WORDPRESS_DB_NAME: ${DB_NAME}
+      
+      # PHP Configuration untuk plugin berat seperti Elementor
+      PHP_MEMORY_LIMIT: 512M
+      PHP_MAX_EXECUTION_TIME: 300
+      PHP_UPLOAD_MAX_FILESIZE: 64M
+      PHP_POST_MAX_SIZE: 64M
     volumes:
-      - ./wordpress:/var/www/html
+      - wordpress_data:/var/www/html
+      - ./php-custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
     env_file:
       - .env
     networks:
