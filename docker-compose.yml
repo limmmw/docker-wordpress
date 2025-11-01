@@ -19,7 +19,7 @@ services:
       PHP_UPLOAD_MAX_FILESIZE: 64M
       PHP_POST_MAX_SIZE: 64M
     volumes:
-      - wordpress_data:/var/www/html
+      - ./wordpress:/var/www/html
       - ./php-custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
     env_file:
       - .env
