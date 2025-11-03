@@ -1,9 +1,6 @@
 server {
     listen 80;
-    listen [::]:80;
-    
     server_name example.com www.example.com;
-    
     # Logs
     access_log /var/log/nginx/wordpress_access.log;
     error_log /var/log/nginx/wordpress_error.log;
@@ -12,9 +9,8 @@ server {
     client_max_body_size 128M;
     client_body_timeout 300s;
     
-    
     location / {
-        proxy_pass http://localhost:8080;
+        proxy_pass http://localhost:8081;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $http_cf_connecting_ip;
         proxy_set_header X-Forwarded-For $http_cf_connecting_ip;
@@ -45,7 +41,7 @@ server {
     
     # Khusus untuk wp-admin (proses install plugin)
     location ~ ^/(wp-admin|wp-login\.php) {
-        proxy_pass http://localhost:8080;
+        proxy_pass http://localhost:8081;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $http_cf_connecting_ip;
         proxy_set_header X-Forwarded-For $http_cf_connecting_ip;
@@ -69,7 +65,7 @@ server {
     
     # Caching untuk file static
     location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot|webp)$ {
-        proxy_pass http://localhost:8080;
+        proxy_pass http://localhost:8081;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Proto https;
         expires 30d;
